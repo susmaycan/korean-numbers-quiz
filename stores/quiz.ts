@@ -1,0 +1,204 @@
+import { useSettingsStore } from '@/stores/settings'
+import { storeToRefs } from 'pinia'
+import { generateRandomNumber, generateRandomDate } from '@/utils/numbers'
+import { NumberResult } from 'type/result'
+import { TimePeriod } from 'type/numbers'
+
+import { getNumber } from '@/utils/transformation'
+import settings from '@/constants/settings'
+
+export const useQuizStore = defineStore('quiz', () => {
+  const list: Ref<NumberResult[]> = ref([])
+  const allCorrectAnswers: Ref<Boolean> = ref(false)
+  const settingsStore = useSettingsStore()
+  const isLoading = ref(false)
+
+  const {
+    elementCount,
+    quizType,
+    quizSkillType,
+    quizSubType,
+    maxNumber,
+    showResults,
+    isNumberQuizType,
+    isTimeDateQuizType,
+  } = storeToRefs(settingsStore)
+
+  // Common
+
+  const addNumber = (number: number | string, result: string) => {
+    list.value.push({
+      number,
+      result,
+      userInput: null,
+      error: false,
+      success: false,
+    })
+  }
+
+  const removeSpaces = (value: string) => {
+    return value.replace(/ /g, '')
+  }
+
+  // Game generators
+
+  const generateNumberQuiz = () => {
+    for (let i = 0; i < elementCount.value; i++) {
+      const randomNumber = generateRandomNumber(maxNumber.value)
+      if (
+        randomNumber > 0 &&
+        list.value.findIndex(
+          (element: NumberResult) => element.number === randomNumber
+        ) === -1
+      ) {
+        const result = getNumber(quizSubType.value, randomNumber, false)
+        addNumber(randomNumber, result)
+      }
+    }
+  }
+
+  const generateTimeDateQuiz = () => {
+    for (let i = 0; i < elementCount.value; i++) {
+      let hour = generateRandomNumber(12)
+      let minute = generateRandomNumber(60)
+      const period = generateRandomNumber(3)
+
+      const resultHour =
+        getNumber(settings.numberTypes.KOREAN, hour, true) + '시 '
+      const resultMinute =
+        minute > 0
+          ? getNumber(settings.numberTypes.CHINESE, minute, true) + '분'
+          : ''
+      const resultPeriod = settings.timePeriodKorean[period as keyof TimePeriod]
+
+      const resultTime = `${resultPeriod} ${resultHour}${resultMinute}`
+
+      let stringHour = hour.toString()
+      if (hour < 10) {
+        stringHour = '0' + stringHour
+      }
+      let stringMinute = minute.toString()
+      if (minute < 10) {
+        stringMinute = '0' + stringMinute
+      }
+      const time = `${stringHour}:${stringMinute} ${
+        settings.timePeriod[period as keyof TimePeriod]
+      }`
+
+      addNumber(time, resultTime)
+    }
+  }
+
+  const generateDateDateQuiz = () => {
+    for (let i = 0; i < elementCount.value; i++) {
+      const date = generateRandomDate(new Date(2000, 0, 1, 3), new Date())
+
+      const year = date.getUTCFullYear()
+      let month = date.getMonth() + 1
+      let day = date.getUTCDate()
+
+      const resultYear =
+        getNumber(settings.numberTypes.CHINESE, year, false) + '년'
+      const resultMonth =
+        getNumber(settings.numberTypes.CHINESE, month, false) + '월'
+      const resultDay =
+        getNumber(settings.numberTypes.CHINESE, day, false) + '일'
+
+      const resultDate = `${resultYear} ${resultMonth} ${resultDay}`
+
+      let stringMonth = month.toString()
+      if (month < 10) {
+        stringMonth = '0' + stringMonth
+      }
+      let stringDay = day.toString()
+      if (day < 10) {
+        stringDay = '0' + stringDay
+      }
+      const displayedDate = `${stringDay}/${stringMonth}/${year}`
+
+      addNumber(displayedDate, resultDate)
+    }
+  }
+
+  // Quiz actions
+
+  const checkResults = () => {
+    let allSuccess = true
+    let isCorrect = true
+    list.value.forEach((element, index) => {
+      const { userInput, result } = element
+
+      if (!userInput) {
+        isCorrect = false
+      } else {
+        isCorrect = removeSpaces(result) === removeSpaces(userInput)
+      }
+      if (!isCorrect) {
+        allSuccess = false
+      }
+
+      list.value[index] = { ...element, error: !isCorrect, success: isCorrect }
+    })
+
+    allCorrectAnswers.value = allSuccess
+  }
+
+  const generateQuiz = () => {
+    isLoading.value = true
+
+    resetQuiz()
+    if (isNumberQuizType.value) {
+      generateNumberQuiz()
+    } else if (isTimeDateQuizType.value) {
+      generateTimeDateQuiz()
+    } else {
+      generateDateDateQuiz()
+    }
+
+    setTimeout(() => {
+      isLoading.value = false
+    }, 300)
+  }
+
+  const resetQuiz = () => {
+    list.value = []
+    allCorrectAnswers.value = false
+    showResults.value = false
+  }
+
+  const clearQuiz = () => {
+    allCorrectAnswers.value = false
+    showResults.value = false
+    list.value = list.value.map((element) => ({
+      ...element,
+      error: false,
+      success: false,
+      userInput: null,
+    }))
+  }
+
+  // Computed
+
+  const hasCheckedResults = computed(() => {
+    let hasCheckedResults = false
+    list.value.forEach((element, index) => {
+      const { error, success } = element
+
+      if (error !== false || success !== false) {
+        hasCheckedResults = true
+      }
+    })
+
+    return hasCheckedResults
+  })
+
+  return {
+    list,
+    clearQuiz,
+    generateQuiz,
+    checkResults,
+    allCorrectAnswers,
+    hasCheckedResults,
+    isLoading,
+  }
+})
