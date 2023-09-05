@@ -22,6 +22,7 @@ export const useQuizStore = defineStore('quiz', () => {
     showResults,
     isNumberQuizType,
     isTimeDateQuizType,
+    isListeningQuiz,
   } = storeToRefs(settingsStore)
 
   // Common
@@ -51,7 +52,9 @@ export const useQuizStore = defineStore('quiz', () => {
           (element: NumberResult) => element.number === randomNumber
         ) === -1
       ) {
-        const result = getNumber(quizSubType.value, randomNumber, false)
+        const result = isListeningQuiz.value
+          ? randomNumber.toString()
+          : getNumber(quizSubType.value, randomNumber, false)
         addNumber(randomNumber, result)
       }
     }
@@ -85,7 +88,11 @@ export const useQuizStore = defineStore('quiz', () => {
         settings.timePeriod[period as keyof TimePeriod]
       }`
 
-      addNumber(time, resultTime)
+      if (isListeningQuiz.value) {
+        addNumber(time, time)
+      } else {
+        addNumber(time, resultTime)
+      }
     }
   }
 
@@ -116,7 +123,11 @@ export const useQuizStore = defineStore('quiz', () => {
       }
       const displayedDate = `${stringDay}/${stringMonth}/${year}`
 
-      addNumber(displayedDate, resultDate)
+      if (isListeningQuiz.value) {
+        addNumber(displayedDate, displayedDate)
+      } else {
+        addNumber(displayedDate, resultDate)
+      }
     }
   }
 
