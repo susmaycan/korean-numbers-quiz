@@ -1,4 +1,9 @@
-import { ChineseNumbers, UnitsZero, Units, KoreanNumbers } from '@/type/numbers'
+import type {
+  ChineseNumbers,
+  UnitsZero,
+  Units,
+  KoreanNumbers,
+} from '@/type/numbers'
 import settings from '@/constants/settings'
 
 const koreanNumbers: KoreanNumbers = {
@@ -150,4 +155,3 @@ export const getNumber = (
     ? getKoreanNumber(number, hour)
     : getChineseNumber(number)
 }
- 

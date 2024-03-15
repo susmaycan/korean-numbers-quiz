@@ -1,3 +1,10 @@
+<script setup lang="ts">
+const emits = defineEmits(['toggle-drawer'])
+
+const toggleDrawer = () => {
+  emits('toggle-drawer')
+}
+</script>
 <template>
   <v-app-bar scroll-behavior="elevate">
     <template v-slot:prepend>
@@ -12,11 +19,3 @@
     <theme-switcher />
   </v-app-bar>
 </template>
-
-<script setup lang="ts">
-const emits = defineEmits(['toggle-drawer'])
-
-const toggleDrawer = () => {
-  emits('toggle-drawer')
-}
-</script>

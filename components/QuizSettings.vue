@@ -1,7 +1,44 @@
+<script setup lang="ts">
+import { useDisplay } from 'vuetify'
+
+const {
+  quizType,
+  quizSkillType,
+  quizSubType,
+  maxNumber,
+  isNumberQuizType,
+  maxNumberLimit,
+} = useSettings()
+
+const { isCompatible } = useSpeechAPI()
+
+const { generateQuiz } = useQuiz()
+
+const { mobile } = useDisplay()
+
+const emits = defineEmits(['toggle-drawer'])
+
+const skillQuizTypeOptions = computed(() =>
+  isCompatible.value ? settings.skillQuizType : [settings.skillQuizType.WRITTEN]
+)
+
+const generate = () => {
+  generateQuiz()
+
+  if (mobile.value) {
+    emits('toggle-drawer')
+  }
+}
+
+watch([quizType, quizSkillType, quizSubType, maxNumber], () => {
+  generateQuiz()
+})
+</script>
 <template>
   <div class="pa-5 w-100">
     <h2 class="text-center">{{ $t('settings') }}</h2>
-    <div v-if="isListeningCompatible" class="pl-2 settings-input">
+    {{ isCompatible }}
+    <div v-if="isCompatible" class="pl-2 settings-input">
       <voice-speed-slider />
     </div>
     <div>
@@ -13,7 +50,7 @@
           hide-details
         >
           <v-radio
-            v-for="quizTypeOption in quizSettings.quizType"
+            v-for="quizTypeOption in settings.quizType"
             :key="quizTypeOption"
             :label="$t(quizTypeOption)"
             :value="quizTypeOption"
@@ -45,7 +82,7 @@
           :label="$t('number_type')"
         >
           <v-radio
-            v-for="quizNumberTypeOption in quizSettings.numberTypes"
+            v-for="quizNumberTypeOption in settings.numberTypes"
             :key="quizNumberTypeOption"
             :label="$t(quizNumberTypeOption)"
             :value="quizNumberTypeOption"
@@ -60,7 +97,7 @@
           :label="$t('date_quiz_type')"
         >
           <v-radio
-            v-for="typeOption in quizSettings.dateQuizType"
+            v-for="typeOption in settings.dateQuizType"
             :key="typeOption"
             :label="$t(typeOption)"
             :value="typeOption"
@@ -91,51 +128,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import quizSettings from '@/constants/settings'
-import { storeToRefs } from 'pinia'
-import { useSettingsStore } from '@/stores/settings'
-import { useQuizStore } from '@/stores/quiz'
-import { useDisplay } from 'vuetify'
-
-const settingsStore = useSettingsStore()
-const quizStore = useQuizStore()
-
-const {
-  quizType,
-  quizSkillType,
-  quizSubType,
-  maxNumber,
-  isNumberQuizType,
-  maxNumberLimit,
-  isListeningCompatible,
-} = storeToRefs(settingsStore)
-
-const { generateQuiz } = quizStore
-
-const { mobile } = useDisplay()
-
-const emits = defineEmits(['toggle-drawer'])
-
-const skillQuizTypeOptions = computed(() =>
-  isListeningCompatible.value
-    ? quizSettings.skillQuizType
-    : [quizSettings.skillQuizType.WRITTEN]
-)
-
-const generate = () => {
-  generateQuiz()
-
-  if (mobile.value) {
-    emits('toggle-drawer')
-  }
-}
-
-watch([quizType, quizSkillType, quizSubType, maxNumber], () => {
-  generateQuiz()
-})
-</script>
 
 <style lang="scss" scoped>
 .settings-input {

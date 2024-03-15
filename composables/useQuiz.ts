@@ -1,29 +1,17 @@
-import { useSettingsStore } from '@/stores/settings'
-import { storeToRefs } from 'pinia'
-import { generateRandomNumber, generateRandomDate } from '@/utils/numbers'
-import { NumberResult } from 'type/result'
-import { TimePeriod } from 'type/numbers'
-
-import { getNumber } from '@/utils/transformation'
-import settings from '@/constants/settings'
-
-export const useQuizStore = defineStore('quiz', () => {
-  const list: Ref<NumberResult[]> = ref([])
-  const allCorrectAnswers: Ref<Boolean> = ref(false)
-  const settingsStore = useSettingsStore()
-  const isLoading = ref(false)
+export const useQuiz = () => {
+  const list = useState<NumberResult[]>('list', () => [])
+  const allCorrectAnswers = useState<Boolean>('allCorrectAnswers', () => false)
+  const isLoading = useState<Boolean>('isLoading', () => false)
 
   const {
     elementCount,
-    quizType,
-    quizSkillType,
     quizSubType,
     maxNumber,
     showResults,
     isNumberQuizType,
     isTimeDateQuizType,
     isListeningQuiz,
-  } = storeToRefs(settingsStore)
+  } = useSettings()
 
   // Common
 
@@ -212,4 +200,4 @@ export const useQuizStore = defineStore('quiz', () => {
     hasCheckedResults,
     isLoading,
   }
-})
+}

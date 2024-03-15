@@ -1,14 +1,22 @@
-import settings from '@/constants/settings'
+export const useSettings = () => {
+  const elementCount = useState<number>('elementCount', () => 10)
+  const maxNumber = useState<number>(
+    'maxNumber',
+    () => settings.maxNumbers[settings.numberTypes.KOREAN][0]
+  )
 
-export const useSettingsStore = defineStore('settings', () => {
-  const elementCount = ref(10)
-  const maxNumber = ref(settings.maxNumbers[settings.numberTypes.KOREAN][0])
-  const quizType = ref(settings.quizType.NUMBERS)
-  const quizSkillType = ref(settings.skillQuizType.WRITTEN)
-  const quizSubType = ref(settings.numberTypes.KOREAN)
-  const voiceSpeed = ref(0.5)
-  const showResults = ref(false)
-  const isListeningCompatible = ref(false)
+  const quizType = useState<string>('quizType', () => settings.quizType.NUMBERS)
+  const quizSkillType = useState<string>(
+    'quizSkillType',
+    () => settings.skillQuizType.WRITTEN
+  )
+  const quizSubType = useState<string>(
+    'quizSubType',
+    () => settings.numberTypes.KOREAN
+  )
+
+  const voiceSpeed = useState<number>('voiceSpeed', () => 0.5)
+  const showResults = useState<boolean>('showResults', () => false)
 
   // Computed
 
@@ -63,9 +71,8 @@ export const useSettingsStore = defineStore('settings', () => {
     isWrittenQuiz,
     showResults,
     maxNumberLimit,
-    isListeningCompatible,
     isTimeDateQuizType,
     rowPlaceHolder,
     maxNumberStep,
   }
-})
+}

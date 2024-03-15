@@ -1,3 +1,21 @@
+<script setup lang="ts">
+import { useDisplay } from 'vuetify'
+
+const { mobile } = useDisplay()
+
+const { isDateQuizType, isTimeDateQuizType } = useSettings()
+const { list, isLoading } = useQuiz()
+
+const showTooltip = ref(false)
+
+const tooltipText = computed(() => {
+  if (!isDateQuizType.value) return null
+
+  if (isTimeDateQuizType.value) return 'hour_warning'
+
+  return 'date_warning'
+})
+</script>
 <template>
   <div class="d-flex flex-column w-100 pa-5">
     <div class="d-flex align-center justify-space-between">
@@ -38,32 +56,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { storeToRefs } from 'pinia'
-import { useQuizStore } from '@/stores/quiz'
-import { useSettingsStore } from '@/stores/settings'
-import { useDisplay } from 'vuetify'
-
-const { mobile } = useDisplay()
-const settingsStore = useSettingsStore()
-const quizStore = useQuizStore()
-
-const { isDateQuizType, isTimeDateQuizType } = storeToRefs(settingsStore)
-
-const { list, isLoading } = storeToRefs(quizStore)
-
-const tooltipText = computed(() => {
-  if (!isDateQuizType.value) return null
-
-  if (isTimeDateQuizType.value) return 'hour_warning'
-
-  return 'date_warning'
-})
-
-const showTooltip = ref(false)
-</script>
-
 <style lang="scss" scoped>
 .number-list {
   display: grid;

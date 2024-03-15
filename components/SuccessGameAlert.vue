@@ -1,3 +1,8 @@
+<script setup lang="ts">
+const { allCorrectAnswers, generateQuiz } = useQuiz()
+
+const timeout = 6000
+</script>
 <template>
   <v-snackbar
     :model-value="!!allCorrectAnswers"
@@ -14,14 +19,3 @@
     </template>
   </v-snackbar>
 </template>
-
-<script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { useQuizStore } from '@/stores/quiz'
-const store = useQuizStore()
-
-const { allCorrectAnswers } = storeToRefs(store)
-const { generateQuiz } = store
-
-const timeout = 6000
-</script>

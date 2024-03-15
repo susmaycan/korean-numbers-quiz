@@ -14,19 +14,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ['vuetify'],
   },
-  modules: [
-    '@nuxtjs/i18n',
-    [
-      '@pinia/nuxt',
-      {
-        autoImports: [
-          // automatically imports `defineStore`
-          'defineStore', // import { defineStore } from 'pinia'
-          ['defineStore', 'definePiniaStore'], // import { defineStore as definePiniaStore } from 'pinia'
-        ],
-      },
-    ],
-  ],
+  modules: ['@nuxtjs/i18n'],
   i18n: {
     legacy: false,
     defaultLocale: 'en',
@@ -49,5 +37,8 @@ export default defineNuxtConfig({
       //   file: 'kr.js',
       // },
     ],
+  },
+  imports: {
+    dirs: ['./types', './constants', './stores', './utils'],
   },
 })

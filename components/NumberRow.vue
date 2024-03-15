@@ -1,17 +1,37 @@
+<script setup lang="ts">
+const { speak, isCompatible } = useSpeechAPI()
+
+const { voiceSpeed, showResults, isWrittenQuiz, rowPlaceHolder } = useSettings()
+interface Props {
+  row: NumberResult
+}
+
+const props = defineProps<Props>()
+
+const icon = computed(() => {
+  if (props.row.success) return 'mdi-check'
+  if (props.row.error) return 'mdi-close'
+  return undefined
+})
+
+const speakNumber = async () => {
+  speak(props.row.result, voiceSpeed.value)
+}
+</script>
 <template>
   <div class="mr-4 mb-4">
     <div class="d-flex align-center">
       <span
         v-if="isWrittenQuiz"
         class="font-weight-bold main-number"
-        :class="{ 'mr-3': !isListeningCompatible }"
+        :class="{ 'mr-3': !isCompatible }"
         >{{ row.number }}</span
       >
       <v-btn
-        v-if="isListeningCompatible"
+        v-if="isCompatible"
         icon="mdi-volume-high"
         variant="plain"
-        @click="speak"
+        @click="speakNumber"
       />
       <v-text-field
         v-model="row.userInput"
@@ -28,51 +48,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { NumberResult } from '@/type/result'
-import { storeToRefs } from 'pinia'
-import { useSettingsStore } from '@/stores/settings'
-const settingsStore = useSettingsStore()
-
-const {
-  showResults,
-  isWrittenQuiz,
-  voiceSpeed,
-  isListeningCompatible,
-  rowPlaceHolder,
-} = storeToRefs(settingsStore)
-
-const synth = window.speechSynthesis
-const numberSpeech = new window.SpeechSynthesisUtterance()
-
-interface Props {
-  row: NumberResult
-}
-
-const props = defineProps<Props>()
-
-const icon = computed(() => {
-  if (props.row.success) return 'mdi-check'
-  if (props.row.error) return 'mdi-close'
-  return undefined
-})
-
-const speak = async () => {
-  synth.cancel()
-  numberSpeech.text = `${props.row.result}`
-  const koreanVoice = synth.getVoices().find((voice) => voice.lang === 'ko-KR')
-  if (!koreanVoice) {
-    synth.cancel()
-    alert('Cant reproduce audio')
-  } else {
-    numberSpeech.voice = koreanVoice || null
-    numberSpeech.rate = voiceSpeed.value
-    synth.speak(numberSpeech)
-  }
-}
-</script>
-
 <style lang="scss" scoped>
 .main-number {
   font-size: 18px;

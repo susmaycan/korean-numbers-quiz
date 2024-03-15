@@ -1,4 +1,4 @@
-import { TimePeriod } from 'type/numbers'
+import type { TimePeriod } from '@/type/numbers'
 
 const numberTypes = {
   KOREAN: 'korean',

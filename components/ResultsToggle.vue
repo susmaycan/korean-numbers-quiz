@@ -1,3 +1,6 @@
+<script setup lang="ts">
+const { showResults } = useSettings()
+</script>
 <template>
   <div class="pr-5">
     <v-switch
@@ -7,12 +10,3 @@
     ></v-switch>
   </div>
 </template>
-
-<script setup>
-import { storeToRefs } from 'pinia'
-import { useSettingsStore } from '@/stores/settings'
-
-const settingsStore = useSettingsStore()
-
-const { showResults } = storeToRefs(settingsStore)
-</script>
