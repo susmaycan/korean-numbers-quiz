@@ -1,5 +1,3 @@
-import type { TimePeriod } from '@/type/numbers'
-
 const numberTypes = {
   KOREAN: 'korean',
   CHINESE: 'chinese',

@@ -1,11 +1,3 @@
-import type {
-  ChineseNumbers,
-  UnitsZero,
-  Units,
-  KoreanNumbers,
-} from '@/type/numbers'
-import settings from '@/constants/settings'
-
 const koreanNumbers: KoreanNumbers = {
   units: {
     '0': '',
