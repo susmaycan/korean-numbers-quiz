@@ -37,7 +37,6 @@ watch([quizType, quizSkillType, quizSubType, maxNumber], () => {
 <template>
   <div class="pa-5 w-100">
     <h2 class="text-center">{{ $t('settings') }}</h2>
-    {{ isCompatible }}
     <div v-if="isCompatible" class="pl-2 settings-input">
       <voice-speed-slider />
     </div>
