@@ -60,7 +60,7 @@ const icon = computed(() => {
 
 const speak = async () => {
   synth.cancel()
-  numberSpeech.text = `${props.row.number}`
+  numberSpeech.text = `${props.row.result}`
   const koreanVoice = synth.getVoices().find((voice) => voice.lang === 'ko-KR')
   if (!koreanVoice) {
     synth.cancel()
