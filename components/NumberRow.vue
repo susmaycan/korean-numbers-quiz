@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { speak, isCompatible } = useSpeechAPI()
+const { speak, isCompatible, voiceList } = useSpeechAPI()
 
 const { voiceSpeed, showResults, isWrittenQuiz, rowPlaceHolder } = useSettings()
 interface Props {

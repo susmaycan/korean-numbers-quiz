@@ -1,17 +1,18 @@
 <template>
-  <v-app>
-    <v-layout ref="app" class="rounded rounded-md">
-      <app-bar @toggle-drawer="toggleDrawer" />
+  <client-only>
+    <v-app>
+      <v-layout ref="app" class="rounded rounded-md">
+        <app-bar @toggle-drawer="toggleDrawer" />
 
-      <navigation-drawer :show="showDrawer" @toggle-drawer="toggleDrawer" />
-
-      <v-main class="d-flex align-center justify-center">
-        <v-container>
-          <slot />
-        </v-container>
-      </v-main>
-    </v-layout>
-  </v-app>
+        <navigation-drawer :show="showDrawer" @toggle-drawer="toggleDrawer" />
+        <v-main class="d-flex align-center justify-center">
+          <v-container>
+            <slot />
+          </v-container>
+        </v-main>
+      </v-layout>
+    </v-app>
+  </client-only>
 </template>
 
 <script setup lang="ts">
