@@ -6,19 +6,22 @@ export default defineNuxtConfig({
       charset: 'utf-8',
     },
   },
+
   devtools: { enabled: true },
+
   css: [
     'vuetify/lib/styles/main.sass',
     '@mdi/font/css/materialdesignicons.min.css',
   ],
+
   build: {
     transpile: ['vuetify'],
   },
+
   modules: ['@nuxtjs/i18n'],
+
   i18n: {
-    legacy: false,
     defaultLocale: 'en',
-    langDir: 'locales',
     strategy: 'no_prefix',
     locales: [
       {
@@ -38,7 +41,10 @@ export default defineNuxtConfig({
       // },
     ],
   },
+
   imports: {
     dirs: ['./types', './constants', './stores', './utils'],
   },
+
+  compatibilityDate: '2025-03-12',
 })
