@@ -10,14 +10,14 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/devtools": "latest",
-    "@nuxtjs/i18n": "^9.3.1",
+    "@nuxt/devtools": "^2.3.1",
+    "@nuxtjs/i18n": "^9.3.2",
     "@types/node": "^18",
-    "nuxt": "^3.16.0",
-    "sass": "^1.63.6"
+    "nuxt": "^3.16.1",
+    "sass": "^1.86.0"
   },
   "dependencies": {
     "@mdi/font": "^7.2.96",
-    "vuetify": "^3.7.16"
+    "vuetify": "^3.7.18"
   }
 }
