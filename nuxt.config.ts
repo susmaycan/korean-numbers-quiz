@@ -40,6 +40,9 @@ export default defineNuxtConfig({
       //   file: 'kr.js',
       // },
     ],
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
   },
 
   imports: {
