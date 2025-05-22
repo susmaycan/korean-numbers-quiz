@@ -15,7 +15,6 @@ const icon = computed(() => {
 })
 
 const speakNumber = async () => {
-  console.log('🚀 ~ speakNumber ~ props.row.resul:', props.row)
   speak(props.row.result, voiceSpeed.value)
 }
 </script>

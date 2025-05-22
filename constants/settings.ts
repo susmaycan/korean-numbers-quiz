@@ -44,15 +44,33 @@ const timePeriodKorean: TimePeriod = {
   2: '오후',
 }
 
+const timePeriodJapanese: TimePeriod = {
+  1: '午前',
+  2: '午後',
+}
+
 export const placeholders = {
   [quizType.DATES]: {
     [dateQuizType.DATE]: {
-      [skillQuizType.LISTENING]: '02/05/2000',
-      [skillQuizType.WRITTEN]: '이천년 오월 이일',
+      [languageType.KOREAN]: {
+        [skillQuizType.LISTENING]: '02/05/2000',
+        [skillQuizType.WRITTEN]: '이천년 오월 이일',
+      },
+      [languageType.JAPANESE]: {
+        [skillQuizType.LISTENING]: '02/05/2000',
+        [skillQuizType.WRITTEN]: '二千年 二月 五日',
+      },
     },
     [dateQuizType.TIME]: {
-      [skillQuizType.LISTENING]: '05:10 PM',
-      [skillQuizType.WRITTEN]: '오후 다섯시 십분',
+      [languageType.KOREAN]: {
+        [skillQuizType.LISTENING]: '05:10 PM',
+        [skillQuizType.WRITTEN]: '오후 다섯시 십분',
+      },
+
+      [languageType.JAPANESE]: {
+        [skillQuizType.LISTENING]: '05:10 PM',
+        [skillQuizType.WRITTEN]: '午後 ご時 十分',
+      },
     },
   },
   [quizType.NUMBERS]: {
@@ -81,5 +99,6 @@ export default {
   quizType,
   skillQuizType,
   timePeriod,
+  timePeriodJapanese,
   timePeriodKorean,
 }

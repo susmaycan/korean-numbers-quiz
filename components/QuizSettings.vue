@@ -105,7 +105,7 @@ watch([languageType, quizType, quizSkillType, quizSubType, maxNumber], () => {
           />
         </v-radio-group>
       </div>
-      <div v-else-if="isKoreanQuizType" class="settings-input">
+      <div v-else-if="!isNumberQuizType" class="settings-input">
         <v-radio-group
           v-model="quizSubType"
           inline

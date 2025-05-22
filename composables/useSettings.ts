@@ -49,12 +49,15 @@ export const useSettings = () => {
     () => settings.maxNumbers[languageType.value][quizSubType.value]
   )
 
-  const rowPlaceHolder = computed(
-    () =>
-      settings.placeholders[quizType.value][quizSubType.value][
-        quizSkillType.value
-      ]
-  )
+  const rowPlaceHolder = computed(() => {
+    return isNumberQuizType.value
+      ? settings.placeholders[quizType.value][quizSubType.value][
+          quizSkillType.value
+        ]
+      : settings.placeholders[quizType.value][quizSubType.value][
+          languageType.value
+        ][quizSkillType.value]
+  })
 
   // Watchers
   watch(quizType, (newVal, oldVal) => {
@@ -65,7 +68,10 @@ export const useSettings = () => {
           ? settings.koreanNumberTypes.KOREAN
           : settings.dateQuizType.DATE
     } else {
-      quizSubType.value = settings.japaneseNumberTypes.JAPANESE
+      quizSubType.value =
+        newVal === settings.quizType.NUMBERS
+          ? settings.japaneseNumberTypes.JAPANESE
+          : settings.dateQuizType.DATE
     }
   })
   watch(languageType, (newVal, oldVal) => {
@@ -76,7 +82,10 @@ export const useSettings = () => {
           ? settings.koreanNumberTypes.KOREAN
           : settings.dateQuizType.DATE
     } else {
-      quizSubType.value = settings.japaneseNumberTypes.JAPANESE
+      quizSubType.value =
+        quizType.value === settings.quizType.NUMBERS
+          ? settings.japaneseNumberTypes.JAPANESE
+          : settings.dateQuizType.DATE
     }
   })
   watch(quizSubType, (newVal, oldVal) => {

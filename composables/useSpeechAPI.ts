@@ -44,12 +44,8 @@ export function useSpeechAPI() {
   )
 
   const speak = (text: string | number, speed: number) => {
-    console.log('🚀 ~ useSpeechAPI ~ voiceList.value:', voiceList.value)
-    console.log('🚀 ~ useSpeechAPI ~ japaneseVoice:', japaneseVoice.value)
-
     if (!isCompatible.value || !speech.value) return
 
-    console.log()
     synth.value.cancel()
     speech.value.text = text.toString()
     speech.value.voice = voice.value!

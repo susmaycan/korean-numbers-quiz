@@ -6,10 +6,11 @@
     </template>
   </v-navigation-drawer>
 </template>
-<script setup>
-const props = defineProps({
-  show: Boolean,
-})
+<script setup lang="ts">
+defineProps<{
+  show: boolean
+}>()
+
 const emits = defineEmits(['toggle-drawer'])
 
 const toggleDrawer = () => {
