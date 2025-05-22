@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const { allCorrectAnswers, hasCheckedResults } = useQuiz()
+defineProps<{
+  allCorrectAnswers: boolean
+  hasCheckedResults: boolean
+}>()
+
 const timeout = 4000
 </script>
 <template>

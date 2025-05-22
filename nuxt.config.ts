@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   app: {
     head: {
-      title: 'Korean Numbers Quiz',
+      title: 'Numbers Quiz',
       charset: 'utf-8',
     },
   },
@@ -27,17 +27,17 @@ export default defineNuxtConfig({
       {
         code: 'en',
         name: 'English',
-        file: 'en.js',
+        file: 'en.json',
       },
       {
         code: 'es',
         name: 'Español',
-        file: 'es.js',
+        file: 'es.json',
       },
       // {
       //   code: 'kr',
       //   name: '한국어',
-      //   file: 'kr.js',
+      //   file: 'kr.json',
       // },
     ],
     bundle: {

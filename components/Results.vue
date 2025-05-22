@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { useDisplay } from 'vuetify'
 
+defineProps<{
+  isLoading: boolean
+  list: NumberResult[]
+}>()
+
 const { mobile } = useDisplay()
 
 const { isDateQuizType, isTimeDateQuizType } = useSettings()
-const { list, isLoading } = useQuiz()
 
 const showTooltip = ref(false)
 

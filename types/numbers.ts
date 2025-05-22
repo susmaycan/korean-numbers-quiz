@@ -42,3 +42,7 @@ export interface TimePeriod {
   1: string
   2: string
 }
+
+export interface IJapaneseNumbers {
+  [key: string]: number
+}

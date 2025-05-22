@@ -2,12 +2,14 @@
 import { useDisplay } from 'vuetify'
 
 const {
-  quizType,
+  isKoreanQuizType,
+  isNumberQuizType,
+  languageType,
+  maxNumber,
+  maxNumberLimit,
   quizSkillType,
   quizSubType,
-  maxNumber,
-  isNumberQuizType,
-  maxNumberLimit,
+  quizType,
 } = useSettings()
 
 const { isCompatible } = useSpeechAPI()
@@ -30,7 +32,7 @@ const generate = () => {
   }
 }
 
-watch([quizType, quizSkillType, quizSubType, maxNumber], () => {
+watch([languageType, quizType, quizSkillType, quizSubType, maxNumber], () => {
   generateQuiz()
 })
 </script>
@@ -41,6 +43,21 @@ watch([quizType, quizSkillType, quizSubType, maxNumber], () => {
       <voice-speed-slider />
     </div>
     <div>
+      <div class="settings-input">
+        <v-radio-group
+          v-model="languageType"
+          inline
+          :label="$t('number_language_type')"
+          hide-details
+        >
+          <v-radio
+            v-for="languageOption in settings.languageType"
+            :key="languageOption"
+            :label="$t(languageOption)"
+            :value="languageOption"
+          />
+        </v-radio-group>
+      </div>
       <div class="settings-input">
         <v-radio-group
           v-model="quizType"
@@ -73,7 +90,7 @@ watch([quizType, quizSkillType, quizSubType, maxNumber], () => {
         </v-radio-group>
       </div>
 
-      <div v-if="isNumberQuizType" class="settings-input">
+      <div v-if="isNumberQuizType && isKoreanQuizType" class="settings-input">
         <v-radio-group
           v-model="quizSubType"
           hide-details
@@ -81,14 +98,14 @@ watch([quizType, quizSkillType, quizSubType, maxNumber], () => {
           :label="$t('number_type')"
         >
           <v-radio
-            v-for="quizNumberTypeOption in settings.numberTypes"
+            v-for="quizNumberTypeOption in settings.koreanNumberTypes"
             :key="quizNumberTypeOption"
             :label="$t(quizNumberTypeOption)"
             :value="quizNumberTypeOption"
           />
         </v-radio-group>
       </div>
-      <div v-else class="settings-input">
+      <div v-else-if="!isNumberQuizType" class="settings-input">
         <v-radio-group
           v-model="quizSubType"
           inline
