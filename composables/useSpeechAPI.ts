@@ -35,7 +35,7 @@ export function useSpeechAPI() {
     if (languageType.value === settings.languageType.KOREAN) {
       return koreanVoice.value
     } else {
-      japaneseVoice.value
+      return japaneseVoice.value
     }
   })
 
