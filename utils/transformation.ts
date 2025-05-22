@@ -57,6 +57,23 @@ const chineseNumbers: ChineseNumbers = {
   '6': '백',
 }
 
+const japaneseNumbers: IJapaneseNumbers = {
+  零: 0,
+  一: 1,
+  二: 2,
+  三: 3,
+  四: 4,
+  五: 5,
+  六: 6,
+  七: 7,
+  八: 8,
+  九: 9,
+  十: 10,
+  百: 100,
+  千: 1000,
+  万: 10000,
+}
+
 function nextFourDigitsHaveNonZero(index: number, inputString: string) {
   for (let j = index + 1; j <= index + 3; j++) {
     if (j < inputString.length && inputString.charAt(j) !== '0') {
@@ -138,12 +155,49 @@ const getChineseNumber = (number: number) => {
   return output.trim()
 }
 
+const getJapaneseNumber = (arabicNumber: number) => {
+  const numberToKanji: { [key: number]: string } = Object.fromEntries(
+    Object.entries(japaneseNumbers).map(([k, v]) => [v, k])
+  )
+
+  if (arabicNumber === 0) return numberToKanji[0]
+
+  let result = ''
+  let remaining = arabicNumber
+
+  const units = [
+    { value: 10000, kanji: '万' },
+    { value: 1000, kanji: '千' },
+    { value: 100, kanji: '百' },
+    { value: 10, kanji: '十' },
+    { value: 1, kanji: '' },
+  ]
+
+  for (const { value, kanji } of units) {
+    const digit = Math.floor(remaining / value)
+    if (digit > 0) {
+      if (value !== 1 && digit === 1 && value >= 10) {
+        result += kanji
+      } else {
+        result += numberToKanji[digit] + kanji
+      }
+      remaining -= digit * value
+    }
+  }
+
+  return result
+}
+
 export const getNumber = (
   type: string,
   number: number,
   hour: boolean = false
 ) => {
-  return type === settings.numberTypes.KOREAN
-    ? getKoreanNumber(number, hour)
-    : getChineseNumber(number)
+  if (type === settings.japaneseNumberTypes.JAPANESE)
+    return getJapaneseNumber(number)
+
+  if (type === settings.koreanNumberTypes.KOREAN)
+    return getKoreanNumber(number, hour)
+
+  return getChineseNumber(number)
 }

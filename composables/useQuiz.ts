@@ -16,13 +16,16 @@ export const useQuiz = () => {
   // Common
 
   const addNumber = (number: number | string, result: string) => {
-    list.value.push({
-      number,
-      result,
-      userInput: null,
-      error: false,
-      success: false,
-    })
+    list.value = [
+      ...list.value,
+      {
+        number,
+        result,
+        userInput: null,
+        error: false,
+        success: false,
+      },
+    ]
   }
 
   const removeSpaces = (value: string) => {
@@ -43,6 +46,7 @@ export const useQuiz = () => {
         const result = isListeningQuiz.value
           ? randomNumber.toString()
           : getNumber(quizSubType.value, randomNumber, false)
+
         addNumber(randomNumber, result)
       }
     }
@@ -55,10 +59,10 @@ export const useQuiz = () => {
       const period = generateRandomNumber(3)
 
       const resultHour =
-        getNumber(settings.numberTypes.KOREAN, hour, true) + '시 '
+        getNumber(settings.koreanNumberTypes.KOREAN, hour, true) + '시 '
       const resultMinute =
         minute > 0
-          ? getNumber(settings.numberTypes.CHINESE, minute, true) + '분'
+          ? getNumber(settings.koreanNumberTypes.CHINESE, minute, true) + '분'
           : ''
       const resultPeriod = settings.timePeriodKorean[period as keyof TimePeriod]
 
@@ -93,11 +97,11 @@ export const useQuiz = () => {
       let day = date.getUTCDate()
 
       const resultYear =
-        getNumber(settings.numberTypes.CHINESE, year, false) + '년'
+        getNumber(settings.koreanNumberTypes.CHINESE, year, false) + '년'
       const resultMonth =
-        getNumber(settings.numberTypes.CHINESE, month, false) + '월'
+        getNumber(settings.koreanNumberTypes.CHINESE, month, false) + '월'
       const resultDay =
-        getNumber(settings.numberTypes.CHINESE, day, false) + '일'
+        getNumber(settings.koreanNumberTypes.CHINESE, day, false) + '일'
 
       const resultDate = `${resultYear} ${resultMonth} ${resultDay}`
 
@@ -192,12 +196,12 @@ export const useQuiz = () => {
   })
 
   return {
-    list,
+    allCorrectAnswers,
+    checkResults,
     clearQuiz,
     generateQuiz,
-    checkResults,
-    allCorrectAnswers,
     hasCheckedResults,
     isLoading,
+    list,
   }
 }

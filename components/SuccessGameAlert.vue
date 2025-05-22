@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const { allCorrectAnswers, generateQuiz } = useQuiz()
+defineProps<{
+  allCorrectAnswers: boolean
+}>()
+
+const emits = defineEmits(['generate-quiz'])
 
 const timeout = 6000
 </script>
@@ -15,7 +19,9 @@ const timeout = 6000
       <p>{{ $t('win_message') }}</p>
     </div>
     <template v-slot:actions>
-      <v-btn variant="text" @click="generateQuiz">{{ $t('play_again') }}</v-btn>
+      <v-btn variant="text" @click="emits('generate-quiz')">{{
+        $t('play_again')
+      }}</v-btn>
     </template>
   </v-snackbar>
 </template>
